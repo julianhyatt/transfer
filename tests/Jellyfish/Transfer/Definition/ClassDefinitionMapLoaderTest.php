@@ -6,7 +6,7 @@ namespace Jellyfish\Transfer\Definition;
 
 use Codeception\Test\Unit;
 use Iterator;
-use Jellyfish\Filesystem\FilesystemFacadeInterface;
+use Jellyfish\Transfer\Helper\FilesystemHelperInterface;
 use SplFileInfo;
 use stdClass;
 
@@ -23,9 +23,9 @@ class ClassDefinitionMapLoaderTest extends Unit
     protected $definitionFinderMock;
 
     /**
-     * @var \Jellyfish\Filesystem\FilesystemFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var FilesystemHelperInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $filesystemFacadeMock;
+    protected $filesystemMock;
 
     /**
      * @var \Jellyfish\Transfer\Definition\ClassDefinitionMapMapperInterface|\PHPUnit\Framework\MockObject\MockObject
@@ -68,7 +68,7 @@ class ClassDefinitionMapLoaderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->filesystemFacadeMock = $this->getMockBuilder(FilesystemFacadeInterface::class)
+        $this->filesystemMock = $this->getMockBuilder(FilesystemHelperInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -100,7 +100,7 @@ class ClassDefinitionMapLoaderTest extends Unit
 
         $this->classDefinitionMapLoader = new ClassDefinitionMapLoader(
             $this->definitionFinderMock,
-            $this->filesystemFacadeMock,
+            $this->filesystemMock,
             $this->classDefinitionMapMapperMock,
             $this->classDefinitionMapMergerMock
         );
@@ -135,7 +135,7 @@ class ClassDefinitionMapLoaderTest extends Unit
             ->method('getRealPath')
             ->willReturn($realPath);
 
-        $this->filesystemFacadeMock->expects(static::atLeastOnce())
+        $this->filesystemMock->expects(static::atLeastOnce())
             ->method('readFromFile')
             ->with($realPath)
             ->willReturn(\file_get_contents($realPath));

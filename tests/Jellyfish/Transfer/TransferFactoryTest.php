@@ -5,27 +5,27 @@ declare(strict_types=1);
 namespace Jellyfish\Transfer;
 
 use Codeception\Test\Unit;
-use Jellyfish\Filesystem\FilesystemFacadeInterface;
-use Jellyfish\Finder\FinderFacadeInterface;
-use Jellyfish\Serializer\SerializerFacadeInterface;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Serializer\Serializer;
 
 class TransferFactoryTest extends Unit
 {
     /**
-     * @var \Jellyfish\Filesystem\FilesystemFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Symfony\Component\Filesystem\Filesystem|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $filesystemFacadeMock;
+    protected $filesystemMock;
 
     /**
-     * @var \Jellyfish\Serializer\SerializerFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Symfony\Component\Serializer\Serializer|\PHPUnit\Framework\MockObject\MockObject
      */
 
-    protected $serializerFacadeMock;
+    protected $serializerMock;
 
     /**
-     * @var \Jellyfish\Finder\FinderFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Symfony\Component\Finder\Finder|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $finderFacadeMock;
+    protected $finderMock;
 
     /**
      * @var string
@@ -44,24 +44,24 @@ class TransferFactoryTest extends Unit
     {
         parent::_before();
 
-        $this->filesystemFacadeMock = $this->getMockBuilder(FilesystemFacadeInterface::class)
+        $this->filesystemMock = $this->getMockBuilder(Filesystem::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->serializerFacadeMock = $this->getMockBuilder(SerializerFacadeInterface::class)
+        $this->serializerMock = $this->getMockBuilder(Serializer::class)
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->finderFacadeMock = $this->getMockBuilder(FinderFacadeInterface::class)
+        $this->finderMock = $this->getMockBuilder(Finder::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->rootDir = DIRECTORY_SEPARATOR;
 
         $this->transferFactory = new TransferFactory(
-            $this->filesystemFacadeMock,
-            $this->serializerFacadeMock,
-            $this->finderFacadeMock,
+            $this->filesystemMock,
+            $this->serializerMock,
+            $this->finderMock,
             $this->rootDir
         );
     }

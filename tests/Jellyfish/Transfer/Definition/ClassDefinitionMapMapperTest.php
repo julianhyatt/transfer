@@ -6,7 +6,8 @@ namespace Jellyfish\Transfer\Definition;
 
 use ArrayObject;
 use Codeception\Test\Unit;
-use Jellyfish\Serializer\SerializerFacadeInterface;
+use PHPUnit\Framework\MockObject\MockObject;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class ClassDefinitionMapMapperTest extends Unit
 {
@@ -16,9 +17,9 @@ class ClassDefinitionMapMapperTest extends Unit
     protected ClassDefinitionMapMapper $classDefinitionMapMapper;
 
     /**
-     * @var \Jellyfish\Serializer\SerializerFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Symfony\Component\Serializer\SerializerInterface|\PHPUnit\Framework\MockObject\MockObject
      */
-    protected $serializerFacadeMock;
+    protected SerializerInterface|MockObject $serializerMock;
 
     /**
      * @var \Jellyfish\Transfer\Definition\ClassDefinition[]|\PHPUnit\Framework\MockObject\MockObject[]|\ArrayObject
@@ -37,7 +38,7 @@ class ClassDefinitionMapMapperTest extends Unit
     {
         parent::_before();
 
-        $this->serializerFacadeMock = $this->getMockBuilder(SerializerFacadeInterface::class)
+        $this->serializerMock = $this->getMockBuilder(SerializerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -53,7 +54,7 @@ class ClassDefinitionMapMapperTest extends Unit
                 ->getMock()
         ];
 
-        $this->classDefinitionMapMapper = new ClassDefinitionMapMapper($this->serializerFacadeMock);
+        $this->classDefinitionMapMapper = new ClassDefinitionMapMapper($this->serializerMock);
     }
 
     /**
@@ -63,7 +64,7 @@ class ClassDefinitionMapMapperTest extends Unit
     {
         $json = '[{...}]';
 
-        $this->serializerFacadeMock->expects(static::atLeastOnce())
+        $this->serializerMock->expects(static::atLeastOnce())
             ->method('deserialize')
             ->with($json, ClassDefinition::class . '[]', 'json')
             ->willReturn($this->classDefinitionMocks);
@@ -100,7 +101,7 @@ class ClassDefinitionMapMapperTest extends Unit
     {
         $json = '[{...}]';
 
-        $this->serializerFacadeMock->expects(static::atLeastOnce())
+        $this->serializerMock->expects(static::atLeastOnce())
             ->method('deserialize')
             ->with($json, ClassDefinition::class . '[]', 'json')
             ->willReturn($this->classDefinitionMocks);

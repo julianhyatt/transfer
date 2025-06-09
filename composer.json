@@ -1,39 +1,47 @@
 {
-  "name": "jellyfish/transfer",
+  "name": "jellyfish/transfer-bundle",
   "description": "Jellyfish transfer bundle",
   "license": "MIT",
   "authors": [
     {
       "name": "Daniel Rose",
       "email": "daniel-rose@gmx.de"
+    },
+    {
+      "name": "Julian Hyatt",
+      "email": "dev@jzit.de"
     }
   ],
   "require": {
-    "php": ">=7.4",
-    "jellyfish/console": "^1.0.0",
-    "jellyfish/filesystem": "^1.0.0",
-    "jellyfish/finder": "^1.0.0",
-    "jellyfish/log": "^1.0.0",
-    "jellyfish/pimple": "^1.0.0",
-    "jellyfish/serializer": "^1.0.0",
-    "jellyfish/twig": "^1.0.0"
+    "php": ">=8.2",
+    "symfony/console": "6.2.*",
+    "symfony/filesystem": "6.2.*",
+    "symfony/finder": "6.2.*",
+    "symfony/monolog-bundle": "^3.10",
+    "symfony/serializer": "6.2.*",
+    "symfony/twig-bundle": "6.2.*"
   },
   "require-dev": {
-    "codeception/codeception": "^4.0",
+    "codeception/codeception": "*",
     "mikey179/vfsstream": "^v1.6",
-    "phpstan/phpstan": "^0.12",
+    "phpstan/phpstan": "*",
     "roave/security-advisories": "dev-master as 1.0.0",
-    "sebastian/phpcpd": "^6.0",
-    "squizlabs/php_codesniffer": "^3.0"
+    "sebastian/phpcpd": "*",
+    "squizlabs/php_codesniffer": "*"
   },
   "autoload": {
     "psr-4": {
-      "Jellyfish\\Transfer\\": "src/Jellyfish/Transfer"
+      "Jellyfish\\Transfer\\": "src/"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Jellyfish\\Transfer\\": "tests/Jellyfish/Transfer"
+      "Jellyfish\\Transfer\\": "tests/"
+    }
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true
     }
   }
 }

@@ -6,8 +6,8 @@ namespace Jellyfish\Transfer\Definition;
 
 use Codeception\Test\Unit;
 use Iterator;
-use Jellyfish\Finder\FinderFacadeInterface;
-use Jellyfish\Finder\FinderInterface;
+use Jellyfish\Transfer\Helper\FinderHelperInterface;
+use Symfony\Component\Finder\Finder;
 
 class DefinitionFinderTest extends Unit
 {
@@ -22,12 +22,7 @@ class DefinitionFinderTest extends Unit
     protected string $rootDir;
 
     /**
-     * @var \Jellyfish\Finder\FinderFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
-     */
-    protected $finderFacadeMock;
-
-    /**
-     * @var \Jellyfish\Finder\FinderInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var FinderHelperInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $finderMock;
 
@@ -43,11 +38,7 @@ class DefinitionFinderTest extends Unit
     {
         parent::_before();
 
-        $this->finderFacadeMock = $this->getMockBuilder(FinderFacadeInterface::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->finderMock = $this->getMockBuilder(FinderInterface::class)
+        $this->finderMock = $this->getMockBuilder(FinderHelperInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -57,7 +48,7 @@ class DefinitionFinderTest extends Unit
 
         $this->rootDir = '/';
 
-        $this->definitionFinder = new DefinitionFinder($this->finderFacadeMock, $this->rootDir);
+        $this->definitionFinder = new DefinitionFinder($this->finderMock, $this->rootDir);
     }
 
     /**
@@ -65,10 +56,6 @@ class DefinitionFinderTest extends Unit
      */
     public function testFind(): void
     {
-        $this->finderFacadeMock->expects(static::atLeastOnce())
-            ->method('createFinder')
-            ->willReturn($this->finderMock);
-
         $this->finderMock->expects(static::atLeastOnce())
             ->method('in')
             ->with([
