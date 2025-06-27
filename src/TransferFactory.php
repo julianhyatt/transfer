@@ -15,6 +15,9 @@ use Jellyfish\Transfer\Definition\DefinitionFinderInterface;
 use Jellyfish\Transfer\Generator\ClassGenerator;
 use Jellyfish\Transfer\Helper\FilesystemHelper;
 use Jellyfish\Transfer\Helper\FilesystemHelperInterface;
+use Jellyfish\Transfer\Helper\Finder\FinderFacade;
+use Jellyfish\Transfer\Helper\Finder\FinderFacadeInterface;
+use Jellyfish\Transfer\Helper\Finder\FinderFactory;
 use Jellyfish\Transfer\Helper\FinderHelper;
 use Jellyfish\Transfer\Helper\FinderHelperInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -36,11 +39,10 @@ class TransferFactory
      * @var \Jellyfish\Transfer\TransferCleanerInterface|null
      */
     protected ?TransferCleanerInterface $transferCleaner = null;
-
     /**
-     * @var FinderHelperInterface|null
+     * @var FinderFacadeInterface|null
      */
-    protected ?FinderHelperInterface $finderHelper = null;
+    protected ?FinderFacadeInterface $finderFacade = null;
 
     /**
      * @var FilesystemHelperInterface|null
@@ -94,7 +96,7 @@ class TransferFactory
      */
     protected function createDefinitionFinder(): DefinitionFinderInterface
     {
-        return new DefinitionFinder($this->getFinderHelper(), $this->rootDir);
+        return new DefinitionFinder($this-> getFinderFacade(), $this->rootDir);
     }
 
     /**
@@ -142,23 +144,23 @@ class TransferFactory
     }
 
     /**
-     * @return FinderHelperInterface
+     * @return FinderFacadeInterface
      */
-    protected function createFinderHelper(): FinderHelperInterface
+    protected function createFinderFacade(): FinderFacadeInterface
     {
-        return new FinderHelper($this->finder);
+        return new FinderFacade(new FinderFactory());
     }
 
     /**
-     * @return FinderHelperInterface
+     * @return FinderFacadeInterface
      */
-    public function getFinderHelper(): FinderHelperInterface
+    public function getFinderFacade(): FinderFacadeInterface
     {
-        if ($this->finderHelper === null) {
-            $this->finderHelper = $this->createFinderHelper();
+        if ($this->finderFacade === null) {
+            $this->finderFacade = $this->createFinderFacade();
         }
 
-        return $this->finderHelper;
+        return $this->finderFacade;
     }
 
     /**
@@ -188,7 +190,7 @@ class TransferFactory
     {
         if ($this->transferCleaner === null) {
             $this->transferCleaner = new TransferCleaner(
-                $this->getFinderHelper(),
+                $this->getFinderFacade(),
                 $this->getFilesystemHelper(),
                 $this->getTargetDirectory(),
             );

@@ -1,8 +1,6 @@
 <?php
 
-namespace Jellyfish\Transfer\Helper;
-
-use Iterator;
+namespace Jellyfish\Transfer\Helper\Finder;
 
 interface FinderHelperInterface
 {
@@ -27,5 +25,5 @@ interface FinderHelperInterface
     /**
      * @return \Iterator
      */
-    public function getIterator(): Iterator;
+    public function getIterator(): \Iterator;
 }

@@ -7,6 +7,7 @@ namespace Jellyfish\Transfer;
 use Codeception\Test\Unit;
 use Iterator;
 use Jellyfish\Transfer\Helper\FilesystemHelperInterface;
+use Jellyfish\Transfer\Helper\Finder\FinderFacadeInterface;
 use Jellyfish\Transfer\Helper\FinderHelperInterface;
 use SplFileInfo;
 use stdClass;
@@ -34,6 +35,11 @@ class TransferCleanerTest extends Unit
     protected $finderMock;
 
     /**
+     * @var FinderFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $finderFacadeMock;
+
+    /**
      * @return void
      */
     protected function _before(): void
@@ -48,10 +54,14 @@ class TransferCleanerTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->finderFacadeMock = $this->getMockBuilder(FinderFacadeInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->targetDirectory = '/root/src/Generated/Transfer/';
 
         $this->transferCleaner = new TransferCleaner(
-            $this->finderMock,
+            $this->finderFacadeMock,
             $this->filesystemMock,
             $this->targetDirectory,
         );

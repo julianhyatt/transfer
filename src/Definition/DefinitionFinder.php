@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jellyfish\Transfer\Definition;
 
 use Iterator;
+use Jellyfish\Transfer\Helper\Finder\FinderFacadeInterface;
 use Jellyfish\Transfer\Helper\FinderHelperInterface;
 
 class DefinitionFinder implements DefinitionFinderInterface
@@ -27,11 +28,11 @@ class DefinitionFinder implements DefinitionFinderInterface
     ];
 
     /**
-     * @param FinderHelperInterface $finder
+     * @param FinderFacadeInterface $finderFacade
      * @param string $rootDir
      */
     public function __construct(
-        protected FinderHelperInterface $finder,
+        protected FinderFacadeInterface $finderFacade,
         protected string $rootDir
     ) {
     }
@@ -41,7 +42,7 @@ class DefinitionFinder implements DefinitionFinderInterface
      */
     public function find(): Iterator
     {
-        return $this->finder->in(static::IN_PATTERNS)
+        return $this->finderFacade->createFinder()->in(static::IN_PATTERNS)
             ->name(static::NAME_PATTERN)
             ->getIterator();
     }

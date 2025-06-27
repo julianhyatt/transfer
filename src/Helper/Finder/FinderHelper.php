@@ -1,6 +1,6 @@
 <?php
 
-namespace Jellyfish\Transfer\Helper;
+namespace Jellyfish\Transfer\Helper\Finder;
 
 use Symfony\Component\Finder\Exception\DirectoryNotFoundException;
 use Symfony\Component\Finder\Finder;

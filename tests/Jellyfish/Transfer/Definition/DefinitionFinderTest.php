@@ -6,7 +6,8 @@ namespace Jellyfish\Transfer\Definition;
 
 use Codeception\Test\Unit;
 use Iterator;
-use Jellyfish\Transfer\Helper\FinderHelperInterface;
+use Jellyfish\Transfer\Helper\Finder\FinderFacadeInterface;
+use Jellyfish\Transfer\Helper\Finder\FinderHelperInterface;
 use Symfony\Component\Finder\Finder;
 
 class DefinitionFinderTest extends Unit
@@ -22,9 +23,14 @@ class DefinitionFinderTest extends Unit
     protected string $rootDir;
 
     /**
-     * @var FinderHelperInterface|\PHPUnit\Framework\MockObject\MockObject
+     * @var \Jellyfish\Transfer\Helper\Finder\FinderHelperInterface|\PHPUnit\Framework\MockObject\MockObject
      */
     protected $finderMock;
+
+    /**
+     * @var FinderFacadeInterface|\PHPUnit\Framework\MockObject\MockObject
+     */
+    protected $finderFacadeMock;
 
     /**
      * @var \Iterator|\PHPUnit\Framework\MockObject\MockObject
@@ -42,13 +48,17 @@ class DefinitionFinderTest extends Unit
             ->disableOriginalConstructor()
             ->getMock();
 
+        $this->finderFacadeMock = $this->getMockBuilder(FinderFacadeInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $this->iteratorMock = $this->getMockBuilder(Iterator::class)
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->rootDir = '/';
 
-        $this->definitionFinder = new DefinitionFinder($this->finderMock, $this->rootDir);
+        $this->definitionFinder = new DefinitionFinder($this->finderFacadeMock, $this->rootDir);
     }
 
     /**
@@ -56,13 +66,20 @@ class DefinitionFinderTest extends Unit
      */
     public function testFind(): void
     {
+        $this->finderFacadeMock
+            ->expects(static::atLeastOnce())
+            ->method('createFinder')
+            ->willReturn($this->finderMock);
+        
         $this->finderMock->expects(static::atLeastOnce())
             ->method('in')
             ->with([
+                'src/Transfer/',
+                'src/*/Transfer/',
                 'src/*/*/Transfer/',
                 'packages/*/src/*/*/Transfer/',
                 'vendor/*/*/src/*/*/Transfer/',
-                'vendor/*/*/packages/*/src/*/*/Transfer/'
+                'vendor/*/*/packages/*/src/*/*/Transfer/',
             ])->willReturn($this->finderMock);
 
         $this->finderMock->expects(static::atLeastOnce())

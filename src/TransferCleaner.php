@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Jellyfish\Transfer;
 
 use Jellyfish\Transfer\Helper\FilesystemHelperInterface;
+use Jellyfish\Transfer\Helper\Finder\FinderFacadeInterface;
 use Jellyfish\Transfer\Helper\FinderHelperInterface;
 use SplFileInfo;
 
@@ -13,12 +14,12 @@ use function is_string;
 class TransferCleaner implements TransferCleanerInterface
 {
     /**
-     * @param FinderHelperInterface $finder
+     * @param FinderFacadeInterface $finderFacade
      * @param FilesystemHelperInterface $filesystem
      * @param string $targetDirectory
      */
     public function __construct(
-        protected FinderHelperInterface $finder,
+        protected FinderFacadeInterface $finderFacade,
         protected FilesystemHelperInterface $filesystem,
         protected string $targetDirectory
     ) {
@@ -51,7 +52,8 @@ class TransferCleaner implements TransferCleanerInterface
      */
     protected function cleanDirectory(string $directory): TransferCleanerInterface
     {
-        $iterator = $this->finder->in([$directory])
+        $finder = $this->finderFacade->createFinder();
+        $iterator = $finder->in([$directory])
             ->depth(0)
             ->getIterator();
 
