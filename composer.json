@@ -14,12 +14,12 @@
   ],
   "require": {
     "php": ">=8.2",
-    "symfony/console": "6.2.*|7.2.*",
-    "symfony/filesystem": "6.2.*|7.2.*",
-    "symfony/finder": "6.2.*|7.2.*",
+    "symfony/console": "6.*|7.*",
+    "symfony/filesystem": "6.*|7.*",
+    "symfony/finder": "6.*|7.*",
     "symfony/monolog-bundle": "^3.10",
-    "symfony/serializer": "6.2.*|7.2.*",
-    "symfony/twig-bundle": "6.2.*|7.2.*"
+    "symfony/serializer": "6.*|7.*",
+    "symfony/twig-bundle": "6.*|7.*"
   },
   "require-dev": {
     "codeception/codeception": "*",
