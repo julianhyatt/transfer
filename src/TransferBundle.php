@@ -2,6 +2,7 @@
 
 namespace Jellyfish\Transfer;
 
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class TransferBundle extends Bundle
