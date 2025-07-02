@@ -28,4 +28,9 @@ class JellyfishTransferExtension extends Extension
 
         $container->setParameter('jellyfish_transfer.namespace_prefix', $config['namespace_prefix']);
     }
+
+    public function getAlias(): string
+    {
+        return 'jellyfish_transfer';
+    }
 }
